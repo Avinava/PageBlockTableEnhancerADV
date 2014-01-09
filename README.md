@@ -3,7 +3,8 @@ PageBlockTableEnhancer
 
 
 
->Built upon the backbone of PageBlockTableEnhancer but uses a custom theme and lot moreThis >component converts your regular PageblockTable into a Advanced Datatable and that too 
+>Built upon the backbone of PageBlockTableEnhancer but uses a custom theme and lot more 
+>This component converts your regular PageblockTable into a Advanced Datatable and that too 
 >without any changes in the existing code.
 
 
