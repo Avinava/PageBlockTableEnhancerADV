@@ -1,0 +1,35 @@
+<apex:page controller="PageBlockTableEnhancerADVDemo_Con" tabStyle="Contact">
+    <c:AllDemoLink />
+    
+    
+    <c:PageBlockTableEnhancerADV targetPbTableIds="pbt"  pageSizeOptions="5,10,15,30" defaultPageSize="15"/>
+    <apex:sectionHeader subtitle="PageBlockTableEnhancerADV  Component Demo" title="Advanced VF table"/>   
+    <apex:panelGrid style="padding:4px;margin-bottom:10px;border-radius:5px" columns="1" bgcolor="#DCFBDC" width="100%" >
+        
+        <ul>
+            <li>Just specify the id in the component to Enhance the PageBlockTable</li>
+            <li>Hassle free and easy to use : No changes in VF code required.</li>
+            <li>PageBlockTable Sorting</li>
+            <li>Inbuilt Search</li>
+            <li>Pagination Support</li>
+            <li>This component uses jquery Datatables Plugin to render the table.</li>
+            
+        </ul>
+    </apex:panelGrid>
+ 
+    <apex:form >
+        <apex:pageBlock mode="maindetail" title="List of contacts" id="pb">
+           <apex:pageblockTable value="{!contacts}" var="con" id="pbt" styleclass="">
+                <apex:column value="{!con.firstName}"/>
+                <apex:column value="{!con.lastname}"/>
+                <apex:column value="{!con.Account.Name}"/>
+                <apex:column value="{!con.Birthdate}"/>
+                <apex:column value="{!con.LastModifiedDate}"/>
+            </apex:pageblockTable>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Rerender" oncomplete="initPageBlockTableEnhancerADV();" rerender="pb"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+   
+</apex:page>

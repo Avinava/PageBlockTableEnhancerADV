@@ -1,0 +1,116 @@
+<!--
+Copyright (c) 2013 avidev9@gmail.com
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+3. The name of the author may not be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, 
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:component id="pbEnhancerMain" layout="block" selfClosing="true">
+   
+   <apex:attribute type="String" required="true" name="targetPbTableIds" description="A comma seperated list of Ids of target pageblock table" />
+   <apex:attribute type="boolean" name="paginate" description="assign true if you want to use the pagination feature,default value is true" default="true"/>
+   <apex:attribute type="Integer" name="defaultPageSize" description="Default page size when pagination is implemented"/>
+   <apex:attribute type="String" name="pageSizeOptions" description="A comma seperated list of integer values that will displayed as dropdown for page size"/>
+   <apex:attribute name="noConflict" type="boolean" default="true" description="initiates jquery with noConflict so that jquery doesnt conflicts with standard components, by default it is set to true"/>
+
+   <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"/>
+   <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'jquery.dataTables.js')}"/>
+   <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'typeDetection.js')}"/>
+   <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css"/>
+   <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'jquery.dataTables_themeroller.css')}" />   
+   
+   <script>
+      
+      function PageBlockTableEnhancerADV(){
+             var PbeAdv=this;
+             jQuery.noConflict();
+             jQuery(function($){ 
+                    PbeAdv.init($)
+             });
+      }
+  
+    
+      PageBlockTableEnhancerADV.prototype={
+            init : function($){
+               try{
+                      
+                      var targetIds = '{!targetPbTableIds}';
+                      var targetIdArray = targetIds.split(",");
+                      
+                      $(targetIdArray ).each(function(){
+                        
+                        var elem = this.trim();
+                        var elemObj = $("[id$='"+elem+"']");
+                        elemObj.addClass("BlogForce9TableADV");
+                      });
+                      
+                       dataTable = $('.BlogForce9TableADV').dataTable({
+                            "bJQueryUI": true,
+                            "aaSorting": [],
+                            "bPaginate" : {!paginate},
+                            "bDestroy": true,
+                            "sPaginationType": "full_numbers",
+                            "sDom": '<T><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>',
+                            "aLengthMenu": getALengthMenu(),
+                            "iDisplayLength": {!IF(defaultPageSize == NULL,10,defaultPageSize)}
+                      });
+                      
+                  }
+                 
+                  catch(err){
+                      if (typeof console == "object") {
+                          console.log(err);
+                      }
+                  }  
+                                    
+            }
+      }
+           
+      function getALengthMenu(){
+          var temp = [ 10, 20, 30, 50];
+          if({!pageSizeOptions != NULL}){ 
+              
+              temp = "{!pageSizeOptions}".split(",");
+              for (a in temp ) {
+                  temp[a] = parseInt(temp[a], 10); 
+              }
+          }
+          
+          return temp;
+      }
+       
+      function initPageBlockTableEnhancerADV(){
+          new PageBlockTableEnhancerADV({});
+      }
+      if({!noConflict}){
+          jQuery.noConflict();
+      }
+      initPageBlockTableEnhancerADV();      
+   </script> 
+   <style>
+        .paging_full_numbers .ui-button{
+            color:black !important;
+        }
+    </style>
+ 
+   </apex:component>

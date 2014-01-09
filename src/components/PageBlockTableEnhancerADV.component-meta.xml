@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>29.0</apiVersion>
+    <description>Enhance the default capability of a Pageblock table. This component brings in client side pagination and sorting to pageblock tables.</description>
+    <label>PageBlockTableEnhancerADV</label>
+</ApexComponent>
