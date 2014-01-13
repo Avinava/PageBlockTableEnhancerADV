@@ -14,6 +14,7 @@ Features :
 * Support for specifying available page sizes.
 * Support for choosing default page size on page load.
 * Dynamic Search/filter
+* Support for Export(CSV,EXCEL,PDF)
 * No Coding and Changes Required in existing code.
 
  
@@ -23,6 +24,8 @@ List of Parameters
 * paginate : Assign true if you want to use the pagination feature,default value is true.
 * pageSizeOptions : A comma seperated list of integer values that will displayed as dropdown for page size
 * defaultPageSize : Default page size that needs to be selected (at page load).
+* enableExport : Set true to enable export toolbar
+* exportFileName : File name to used for the files exported from table
 
 Ajax/Rerender support
 --
