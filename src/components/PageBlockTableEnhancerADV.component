@@ -32,18 +32,25 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    <apex:attribute type="Integer" name="defaultPageSize" description="Default page size when pagination is implemented"/>
    <apex:attribute type="String" name="pageSizeOptions" description="A comma seperated list of integer values that will displayed as dropdown for page size"/>
    <apex:attribute name="noConflict" type="boolean" default="true" description="initiates jquery with noConflict so that jquery doesnt conflicts with standard components, by default it is set to true"/>
-
+   <apex:attribute type="boolean" name="enableExport" description="Set this value to true if you want to display the export toolbar" default="true"/>
+   <apex:attribute type="String" name="exportFileName" description="File name to used for the files exported from table"/>
+   
    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"/>
    <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'jquery.dataTables.js')}"/>
    <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'typeDetection.js')}"/>
    <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css"/>
    <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'jquery.dataTables_themeroller.css')}" />   
    
+   <apex:outputPanel rendered="{!enableExport}" layout="none">
+       <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/js/TableTools.min.js')}" />
+       <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/js/ZeroClipboard.js')}" />
+       <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/css/TableTools_JUI.css')}" />
+   </apex:outputPanel>
    <script>
       
       function PageBlockTableEnhancerADV(){
              var PbeAdv=this;
-             jQuery.noConflict();
+            
              jQuery(function($){ 
                     PbeAdv.init($)
              });
@@ -72,7 +79,29 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                             "sPaginationType": "full_numbers",
                             "sDom": '<T><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>',
                             "aLengthMenu": getALengthMenu(),
-                            "iDisplayLength": {!IF(defaultPageSize == NULL,10,defaultPageSize)}
+                            "iDisplayLength": {!IF(defaultPageSize == NULL,10,defaultPageSize)},
+                            "sDom": '<T><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>'
+                            <apex:outputPanel layout="none" rendered="{!enableExport}">
+                            ,"oTableTools": {
+                                "sSwfPath": "{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/swf/copy_csv_xls_pdf.swf')}",
+                                "aButtons": [
+                                    "copy",
+                                    "print",
+                                    {
+                                        "sExtends": "csv",
+                                        "sTitle": "{!exportFileName}"
+                                    },
+                                    {
+                                        "sExtends": "xls",
+                                        "sTitle": "{!exportFileName}"
+                                    },
+                                    {
+                                        "sExtends": "pdf",
+                                        "sTitle": "{!exportFileName}"
+                                    }
+                                ]
+                            }
+                            </apex:outputPanel>
                       });
                       
                   }
@@ -110,6 +139,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    <style>
         .paging_full_numbers .ui-button{
             color:black !important;
+        }
+        
+        .dtExport{
+            padding:5px;
         }
     </style>
  

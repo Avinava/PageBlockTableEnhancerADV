@@ -1,8 +1,8 @@
-<apex:page controller="PageBlockTableEnhancerADVDemo_Con" tabStyle="Contact">
+<apex:page controller="PageBlockTableEnhancerADVDemo_Con" tabStyle="Contact" sidebar="false">
     <c:AllDemoLink />
     
     
-    <c:PageBlockTableEnhancerADV targetPbTableIds="pbt"  pageSizeOptions="5,10,15,30" defaultPageSize="15"/>
+    <c:PageBlockTableEnhancerADV targetPbTableIds="pbt"  pageSizeOptions="5,10,15,30" defaultPageSize="15" enableExport="true"/>
     <apex:sectionHeader subtitle="PageBlockTableEnhancerADV  Component Demo" title="Advanced VF table"/>   
     <apex:panelGrid style="padding:4px;margin-bottom:10px;border-radius:5px" columns="1" bgcolor="#DCFBDC" width="100%" >
         
@@ -12,6 +12,9 @@
             <li>PageBlockTable Sorting</li>
             <li>Inbuilt Search</li>
             <li>Pagination Support</li>
+            <li>Export to PDF,CSV,EXCEL</li>
+            <li>Copy to Clipboard</li>
+            <li>Print Preview</li>
             <li>This component uses jquery Datatables Plugin to render the table.</li>
             
         </ul>
@@ -19,13 +22,24 @@
  
     <apex:form >
         <apex:pageBlock mode="maindetail" title="List of contacts" id="pb">
-           <apex:pageblockTable value="{!contacts}" var="con" id="pbt" styleclass="">
-                <apex:column value="{!con.firstName}"/>
-                <apex:column value="{!con.lastname}"/>
-                <apex:column value="{!con.Account.Name}"/>
-                <apex:column value="{!con.Birthdate}"/>
-                <apex:column value="{!con.LastModifiedDate}"/>
-            </apex:pageblockTable>
+            <apex:pageblocksection title="This is a normal pageblock table" columns="1">
+                <apex:pageblockTable value="{!contacts}" var="con" id="pbt2" styleclass="">
+                    <apex:column value="{!con.firstName}"/>
+                    <apex:column value="{!con.lastname}"/>
+                    <apex:column value="{!con.Account.Name}"/>
+                    <apex:column value="{!con.Birthdate}"/>
+                    <apex:column value="{!con.LastModifiedDate}"/>
+                </apex:pageblockTable>
+            </apex:pageblocksection>
+           <apex:pageblocksection title="This table is enhanced by PageBlockTableEnhancerADV" columns="1">
+               <apex:pageblockTable value="{!contacts}" var="con" id="pbt" styleclass="">
+                    <apex:column value="{!con.firstName}"/>
+                    <apex:column value="{!con.lastname}"/>
+                    <apex:column value="{!con.Account.Name}"/>
+                    <apex:column value="{!con.Birthdate}"/>
+                    <apex:column value="{!con.LastModifiedDate}"/>
+                </apex:pageblockTable>
+            </apex:pageblocksection>
             <apex:pageBlockButtons >
                 <apex:commandButton value="Rerender" oncomplete="initPageBlockTableEnhancerADV();" rerender="pb"/>
             </apex:pageBlockButtons>
