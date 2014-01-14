@@ -2,7 +2,7 @@
     <c:AllDemoLink />
     
     
-    <c:PageBlockTableEnhancerADV targetPbTableIds="pbt"  pageSizeOptions="5,10,15,30" defaultPageSize="15" enableExport="true"/>
+    
     <apex:sectionHeader subtitle="PageBlockTableEnhancerADV  Component Demo" title="Advanced VF table"/>   
     <apex:panelGrid style="padding:4px;margin-bottom:10px;border-radius:5px" columns="1" bgcolor="#DCFBDC" width="100%" >
         
@@ -21,18 +21,10 @@
     </apex:panelGrid>
  
     <apex:form >
-        <apex:pageBlock mode="maindetail" title="List of contacts" id="pb">
-            <apex:pageblocksection title="This is a normal pageblock table" columns="1">
-                <apex:pageblockTable value="{!contacts}" var="con" id="pbt2" styleclass="">
-                    <apex:column value="{!con.firstName}"/>
-                    <apex:column value="{!con.lastname}"/>
-                    <apex:column value="{!con.Account.Name}"/>
-                    <apex:column value="{!con.Birthdate}"/>
-                    <apex:column value="{!con.LastModifiedDate}"/>
-                </apex:pageblockTable>
-            </apex:pageblocksection>
-           <apex:pageblocksection title="This table is enhanced by PageBlockTableEnhancerADV" columns="1">
-               <apex:pageblockTable value="{!contacts}" var="con" id="pbt" styleclass="">
+        <c:PageBlockTableEnhancerADV targetPbTableIds="pbt"  pageSizeOptions="5,10,15,30" defaultPageSize="15" enableExport="true"/>
+        <apex:pageBlock mode="maindetail" id="pb">                     
+           <apex:pageblocksection title="This table is enhanced by PageBlockTableEnhancerADV" columns="1" collapsible="false">
+               <apex:pageblockTable value="{!contacts}" var="con" id="pbt" >
                     <apex:column value="{!con.firstName}"/>
                     <apex:column value="{!con.lastname}"/>
                     <apex:column value="{!con.Account.Name}"/>
@@ -45,5 +37,23 @@
             </apex:pageBlockButtons>
         </apex:pageBlock>
     </apex:form>
-   
+   <apex:pageBlock title="Syntax">
+   <pre>
+<b style="color:blue">&lt;c:PageBlockTableEnhancerADV targetPbTableIds=&quot;pbt&quot;  pageSizeOptions=&quot;5,10,15,30&quot; defaultPageSize=&quot;15&quot; enableExport=&quot;true&quot;/&gt;</b>
+&lt;apex:pageBlock mode=&quot;maindetail&quot; id=&quot;pb&quot;&gt;                     
+   &lt;apex:pageblocksection title=&quot;This table is enhanced by PageBlockTableEnhancerADV&quot; columns=&quot;1&quot; collapsible=&quot;false&quot;&gt;
+       &lt;apex:pageblockTable value=&quot;{contacts}&quot; var=&quot;con&quot; id=&quot;pbt&quot; &gt;
+            &lt;apex:column value=&quot;{con.firstName}&quot;/&gt;
+            &lt;apex:column value=&quot;{con.lastname}&quot;/&gt;
+            &lt;apex:column value=&quot;{con.Account.Name}&quot;/&gt;
+            &lt;apex:column value=&quot;{con.Birthdate}&quot;/&gt;
+            &lt;apex:column value=&quot;{con.LastModifiedDate}&quot;/&gt;
+        &lt;/apex:pageblockTable&gt;
+    &lt;/apex:pageblocksection&gt;
+    &lt;apex:pageBlockButtons &gt;
+        &lt;apex:commandButton value=&quot;Rerender&quot; oncomplete=&quot;initPageBlockTableEnhancerADV();&quot; rerender=&quot;pb&quot;/&gt;
+    &lt;/apex:pageBlockButtons&gt;
+&lt;/apex:pageBlock&gt;
+    </pre>
+   </apex:pageBlock>
 </apex:page>
