@@ -36,17 +36,27 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    <apex:attribute type="String" name="exportFileName" description="File name to used for the files exported from table"/>
    
    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"/>
-   <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'jquery.dataTables.js')}"/>
-   <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'typeDetection.js')}"/>
+   <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/jquery.dataTables.js')}"/>
+
+  
+  
    <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css"/>
    <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'jquery.dataTables_themeroller.css')}" />   
-   
+
+  <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/typeDetection.js')}"/>
+
    <apex:outputPanel rendered="{!enableExport}" layout="none">
-       <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/js/TableTools.min.js')}" />
-       <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/js/ZeroClipboard.js')}" />
-       <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/css/TableTools_JUI.css')}" />
+       <apex:includeScript value="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js" />
+      
+       <apex:stylesheet value="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css" />
+         <script type="text/javascript" language="javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min.js"></script>
    </apex:outputPanel>
+ 
    <script>
+
       
       function PageBlockTableEnhancerADV(){
              var PbeAdv=this;
@@ -71,36 +81,23 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         elemObj.addClass("BlogForce9TableADV");
                       });
                       
-                       dataTable = $('.BlogForce9TableADV').dataTable({
+                       dataTable = $('.BlogForce9TableADV').DataTable({
                             "bJQueryUI": true,
                             "aaSorting": [],
                             "bPaginate" : {!paginate},
                             "bDestroy": true,
                             "sPaginationType": "full_numbers",
-                            "sDom": '<T><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>',
+                            "dom": 'Bfrtip',
                             "aLengthMenu": getALengthMenu(),
                             "iDisplayLength": {!IF(defaultPageSize == NULL,10,defaultPageSize)},
-                            "sDom": '<T><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>'
+                            "sDom": '<B><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>'
                             <apex:outputPanel layout="none" rendered="{!enableExport}">
-                            ,"oTableTools": {
-                                "sSwfPath": "{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'TableTools/swf/copy_csv_xls_pdf.swf')}",
-                                "aButtons": [
-                                    "copy",
-                                    "print",
-                                    {
-                                        "sExtends": "csv",
-                                        "sTitle": "{!exportFileName}"
-                                    },
-                                    {
-                                        "sExtends": "xls",
-                                        "sTitle": "{!exportFileName}"
-                                    },
-                                    {
-                                        "sExtends": "pdf",
-                                        "sTitle": "{!exportFileName}"
-                                    }
-                                ]
-                            }
+                            ,buttons: [
+                                  'copyHtml5',
+                                  'excelHtml5',
+                                  'csvHtml5',
+                                  'pdfHtml5'
+                              ]
                             </apex:outputPanel>
                       });
                       
