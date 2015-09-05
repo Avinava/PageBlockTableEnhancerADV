@@ -192,7 +192,6 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 jQuery.fn.dataTableExt.aTypes.unshift(
     function (sData) {
         sData = cleanDataX(sData);
-        console.log('date-uk',sData,sData.match(/^([1-9]|[12][0-9]|3[01])\/([1-9]|1[012])\/(19|20|21)\d\d$/),!sData);
         if (sData !== null && sData.match(/^([1-9]|[12][0-9]|3[01])\/([1-9]|1[012])\/(19|20|21)\d\d$/)) {
             return 'date-uk';
         }
