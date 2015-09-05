@@ -26,121 +26,111 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <apex:component id="pbEnhancerMain" layout="block" selfClosing="true">
-   
-   <apex:attribute type="String" required="true" name="targetPbTableIds" description="A comma seperated list of Ids of target pageblock table" />
-   <apex:attribute type="boolean" name="paginate" description="assign true if you want to use the pagination feature,default value is true" default="true"/>
-   <apex:attribute type="Integer" name="defaultPageSize" description="Default page size when pagination is implemented"/>
-   <apex:attribute type="String" name="pageSizeOptions" description="A comma seperated list of integer values that will displayed as dropdown for page size"/>
-   <apex:attribute name="noConflict" type="boolean" default="true" description="initiates jquery with noConflict so that jquery doesnt conflicts with standard components, by default it is set to true"/>
-   <apex:attribute type="boolean" name="enableExport" description="Set this value to true if you want to display the export toolbar" default="true"/>
-   <apex:attribute type="String" name="exportFileName" description="File name to used for the files exported from table"/>
-   
-   <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"/>
-   <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/jquery.dataTables.js')}"/>
-
-  
-  
-   <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css"/>
-   <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, 'jquery.dataTables_themeroller.css')}" />   
-
-  <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/typeDetection.js')}"/>
-
-   <apex:outputPanel rendered="{!enableExport}" layout="none">
-       <apex:includeScript value="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js" />
-      
-       <apex:stylesheet value="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css" />
-         <script type="text/javascript" language="javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-        <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-        <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min.js"></script>
-   </apex:outputPanel>
- 
-   <script>
-
-      
-      function PageBlockTableEnhancerADV(){
-             var PbeAdv=this;
-            
-             jQuery(function($){ 
-                    PbeAdv.init($)
-             });
-      }
-  
-    
-      PageBlockTableEnhancerADV.prototype={
-            init : function($){
-               try{
-                      
-                      var targetIds = '{!targetPbTableIds}';
-                      var targetIdArray = targetIds.split(",");
-                      
-                      $(targetIdArray ).each(function(){
-                        
-                        var elem = this.trim();
-                        var elemObj = $("[id$='"+elem+"']");
-                        elemObj.addClass("BlogForce9TableADV");
-                      });
-                      
-                       dataTable = $('.BlogForce9TableADV').DataTable({
-                            "bJQueryUI": true,
-                            "aaSorting": [],
-                            "bPaginate" : {!paginate},
-                            "bDestroy": true,
-                            "sPaginationType": "full_numbers",
-                            "dom": 'Bfrtip',
-                            "aLengthMenu": getALengthMenu(),
-                            "iDisplayLength": {!IF(defaultPageSize == NULL,10,defaultPageSize)},
-                            "sDom": '<B><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>'
-                            <apex:outputPanel layout="none" rendered="{!enableExport}">
-                            ,buttons: [
-                                  'copyHtml5',
-                                  'excelHtml5',
-                                  'csvHtml5',
-                                  'pdfHtml5'
-                              ]
-                            </apex:outputPanel>
-                      });
-                      
-                  }
-                 
-                  catch(err){
-                      if (typeof console == "object") {
-                          console.log(err);
-                      }
-                  }  
-                                    
-            }
-      }
-           
-      function getALengthMenu(){
-          var temp = [ 10, 20, 30, 50];
-          if({!pageSizeOptions != NULL}){ 
-              
-              temp = "{!pageSizeOptions}".split(",");
-              for (a in temp ) {
-                  temp[a] = parseInt(temp[a], 10); 
-              }
-          }
-          
-          return temp;
-      }
        
-      function initPageBlockTableEnhancerADV(){
-          new PageBlockTableEnhancerADV({});
-      }
-      if({!noConflict}){
-          jQuery.noConflict();
-      }
-      initPageBlockTableEnhancerADV();      
-   </script> 
-   <style>
-        .paging_full_numbers .ui-button{
-            color:black !important;
+    <apex:attribute type="String" required="true" name="targetPbTableIds" description="A comma seperated list of Ids of target pageblock table" />
+    <apex:attribute type="boolean" name="paginate" description="assign true if you want to use the pagination feature,default value is true" default="true"/>
+    <apex:attribute type="Integer" name="defaultPageSize" description="Default page size when pagination is implemented"/>
+    <apex:attribute type="String" name="pageSizeOptions" description="A comma seperated list of integer values that will displayed as dropdown for page size"/>
+    <apex:attribute name="noConflict" type="boolean" default="true" description="initiates jquery with noConflict so that jquery doesnt conflicts with standard components, by default it is set to true"/>
+    <apex:attribute type="boolean" name="enableExport" description="Set this value to true if you want to display the export toolbar" default="true"/>
+    <apex:attribute type="String" name="exportFileName" description="File name to used for the files exported from table"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/jquery.dataTables.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/typeDetection.js')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, '/css/jquery-ui.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, '/css/jquery.dataTables_themeroller.css')}" />   
+
+    <apex:outputPanel rendered="{!enableExport}" layout="none">
+        <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/dataTables.buttons.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources, '/css/buttons.dataTables.min.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/jszip.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/pdfmake.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/vfs_fonts.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.PageBlockTableEnhancerADVResources,'/js/buttons.html5.min.js')}"/>
+    </apex:outputPanel>
+    <script>
+        function PageBlockTableEnhancerADV() {
+            var PbeAdv = this;
+
+            jQuery(function($) {
+                PbeAdv.init($)
+            });
         }
-        
-        .dtExport{
-            padding:5px;
+
+
+        PageBlockTableEnhancerADV.prototype = {
+            init: function($) {
+                try {
+
+                    var targetIds = '{!targetPbTableIds}';
+                    var targetIdArray = targetIds.split(",");
+
+                    $(targetIdArray).each(function() {
+
+                        var elem = this.trim();
+                        var elemObj = $("[id$='" + elem + "']");
+                        elemObj.addClass("BlogForce9TableADV");
+                    });
+
+                    dataTable = $('.BlogForce9TableADV').DataTable({
+                        "bJQueryUI": true,
+                        "aaSorting": [],
+                        "bPaginate": {!paginate},
+                        "bDestroy": true,
+                        "sPaginationType": "full_numbers",
+                        "dom": 'Bfrtip',
+                        "aLengthMenu": getALengthMenu(),
+                        "iDisplayLength": {!IF(defaultPageSize == NULL, 10, defaultPageSize)},
+                        "sDom": '<B><"ui-helper-clearfix dtExport"><><"H"lfr>t<"F"ip>' 
+                        <apex:outputPanel layout="none" rendered="{!enableExport}"> ,
+                            buttons: [
+                                'copyHtml5',
+                                'excelHtml5',
+                                'csvHtml5',
+                                'pdfHtml5'
+                            ] 
+                        </apex:outputPanel>
+                    });
+
+                } catch (err) {
+                    if (typeof console == "object") {
+                        console.log(err);
+                    }
+                }
+
+            }
+        }
+
+        function getALengthMenu() {
+            var temp = [10, 20, 30, 50];
+            if ({!pageSizeOptions != NULL}) {
+
+                temp = "{!pageSizeOptions}".split(",");
+                for (a in temp) {
+                    temp[a] = parseInt(temp[a], 10);
+                }
+            }
+
+            return temp;
+        }
+
+        function initPageBlockTableEnhancerADV() {
+            new PageBlockTableEnhancerADV({});
+        }
+        if ({!noConflict}) {
+            jQuery.noConflict();
+        }
+        initPageBlockTableEnhancerADV();
+    </script>
+    <style>
+        .paging_full_numbers .ui-button {
+            color: black !important;
+        }
+
+        .dtExport {
+            padding: 5px;
         }
     </style>
- 
-   </apex:component>
+</apex:component>
