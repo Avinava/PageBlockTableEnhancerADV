@@ -33,25 +33,28 @@ List of Parameters
 
 Ajax/Rerender support
 --
-This version brings in support for rendering, the earlier version wasn't able to handle this. So incase you are rerendering your table or the parent components, you can call the "initPageBlockTableEnhancerADV()" method from "oncomplete" even of your commandButtons/actionFunctions/actionSupport/commandLink .
+This version explains how to properly rerender the enhanced pageblock table. The previous version implemented a method that caused an empty enhanced pageblock table to be added to the page every time the main enhanced pageblock table was rerendered. This method was not necessary, as rerendering the appropriate elements in your visualforce page will cause it to work seamlessly.
 
+To rerender your enhanced pageblock table, rerender the \<apex:form\> tag that contains both the Visualforce component and the original pageblock table.
+
+Example:
 ```
-<apex:commandButton value="Rerender" reRender="mid" oncomplete="initPageBlockTableEnhancerADV()"/>
+<apex:form id="findProductsForm">  
+  <apex:pageBlock title="Find Products" id="findProductsBlock">
+    <c:PageBlockTableEnhancerADV targetPbTableIds="pbeTable" paginate="true" defaultPageSize="25" pageSizeOptions="10,25,50,100,200"/> 
+    <apex:pageBlockButtons location="bottom">
+      <apex:commandButton action="{!setPriceBookEntries}" value="Search" id="searchBtn" reRender="findProductsForm"/>
+    </apex:pageBlockButtons>
+    ...
+    <apex:pageBlockTable id="pbeTable" var="pbeRow" value="{!priceBookEntries}">
+    ...
+    </apex:pageBlockTable>
+  </apex:pageBlock>
+</apex:form>
 ```
 Basic Syntax
-The basic syntax remains same, just few added params.
- 
-```
-<c:PageBlockTableEnhancerADV targetPbTableIds="mid,mid2" paginate="true" defaultPageSize="5" pageSizeOptions="5,10,20,30,40,50,100"/>    
-   <apex:pageBlock >   
-     <apex:pageBlockTable value="{!contacts}" var="con" id="mid">   
-      <apex:column value="{!con.Name}"/>   
-     </apex:pageBlockTable>    
-     <apex:pageBlockTable value="{!contacts}" var="con" id="mid2">   
-      <apex:column value="{!con.Name}"/>   
-     </apex:pageBlockTable>     
-   </apex:pageBlock>  
-   ```
+The syntax remains exactly the same. The most recent change only deals with how to rerender the component.
+
 [8-Dec-2013] v 1.21 : Minor update and bug fixes
 
 [11-Dec-2013]
